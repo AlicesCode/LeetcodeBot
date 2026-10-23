@@ -1,0 +1,25 @@
+const { SlashCommandBuilder, TextDisplayBuilder, FileBuilder, AttachmentBuilder, MessageFlags } = require("discord.js");
+const config = require("../../config");
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName("load")
+        .setDescription("Load a backup")
+        .addAttachmentOption(option => option
+            .setName("file")
+            .setDescription("backup to use")
+            .setRequired(true)
+        ),
+    async execute(interaction) {
+        const file = interaction.options.getAttachment("file");
+        config.settings = file.toJSON();
+        config.volatile.log.send({
+            components: [
+                new TextDisplayBuilder().setContent(`<@${interaction.user.id}> loaded a backup!`),
+                new FileBuilder().setURL('attachment://backup.json'),
+            ],
+            files: [ new AttachmentBuilder(file.url) ],
+            flags: MessageFlags.IsComponentsV2,
+        });
+    }
+}
