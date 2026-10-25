@@ -9,8 +9,9 @@ module.exports = {
         }
         if (config.isSubmission(message)) {
             await config.volatile.guilds[message.guildId].discussionChannel.send(message.url)
-            config.streaks.guilds[message.guildId][message.author.id].hasSubmitted = true;
-            console.log(config.streaks.guilds['1558654694891589724'])
+            config.streaks[message.guildId][message.author.id].hasSubmitted = true;
+            console.log(config.streaks['1558654694891589724'])
+            config.backupStreaks()
         }
         if (config.settings.echoChannels[message.channelId]) {
             await message.reply(message.content != '' ? message.content : "empty message");
