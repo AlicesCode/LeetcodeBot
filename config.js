@@ -17,6 +17,22 @@ module.exports = {
         echoChannels: {},
         guilds: {}
     },
+    streaks: {
+        guilds: {
+            "1558654694891589724": {
+                "981325709706403850": {
+                    alias: "snek",
+                    streak: 0,
+                    hasSubmitted: false
+                },
+                "730152260872568965": {
+                    alias: "alice",
+                    streak: 0,
+                    hasSubmitted: false
+                }
+            },
+        }
+    },
     volatile: {
         client: null,
         logChannel: null,
