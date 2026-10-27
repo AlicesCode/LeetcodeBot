@@ -11,8 +11,8 @@ module.exports = {
             return;
         }
         let re = "";
-        for (const user in config.streaks.guilds[interaction.guildId]) {
-            const {alias, hasSubmitted} = config.streaks.guilds[interaction.guildId][user];
+        for (const user in config.streaks[interaction.guildId]) {
+            const {alias, hasSubmitted} = config.streaks[interaction.guildId][user];
             re += `${alias} has ${hasSubmitted ? "" : "not "}submitted today!\n`;
         }
         await interaction.reply(re);

@@ -11,28 +11,14 @@ module.exports = {
     dev: {
         guildId: process.env.GUILD_ID,
         logChannelId: process.env.LOG_CHANNEL_ID,
-        backupPath: 'data/backup.json'
+        backupPath: 'data/backup.json',
+        streaksPath: 'data/streaks.json',
     },
     settings: {
         echoChannels: {},
         guilds: {}
     },
-    streaks: {
-        guilds: {
-            "1558654694891589724": {
-                "981325709706403850": {
-                    alias: "snek",
-                    streak: 0,
-                    hasSubmitted: false
-                },
-                "730152260872568965": {
-                    alias: "alice",
-                    streak: 0,
-                    hasSubmitted: false
-                }
-            },
-        }
-    },
+    streaks: {},
     volatile: {
         client: null,
         logChannel: null,
@@ -59,9 +45,13 @@ module.exports = {
             })
         }
         
+        // load old streaks
+        const oldStreaks = JSON.parse((await fs.readFile(this.dev.streaksPath)).toString('utf8'));
+        this.streaks = oldStreaks;
+        console.log(this.streaks)
+        
         // load volatile guild channels
         for (const guildID in this.settings.guilds) {
-            console.log(guildID)
             this.volatile.guilds[guildID] = {
                 discussionChannel: await client.channels.fetch(this.settings.guilds[guildID].discussion)
             };
@@ -91,6 +81,9 @@ module.exports = {
         //     files: [ new AttachmentBuilder(this.dev.backupPath) ],
         //     flags: MessageFlags.IsComponentsV2,
         // })
+    },
+    async backupStreaks() {
+        await fs.writeFile(this.dev.streaksPath, JSON.stringify(this.streaks));
     },
     async log(arg) {
         if (typeof arg === "string") {
